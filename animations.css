@@ -252,6 +252,40 @@ html {
   }
 }
 
+/* Mobile-specific animation adjustments */
+@media (max-width: 640px) {
+  [data-animate] {
+    transform: translateY(15px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-2px);
+  }
+  
+  .card-modern:hover {
+    transform: translateY(-4px);
+  }
+  
+  /* Reduce motion on mobile for performance */
+  .image-zoom:hover img {
+    transform: scale(1.02);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .hover-lift:hover,
+  .hover-scale:hover,
+  .card-modern:hover {
+    transform: none;
+  }
+  
+  button:hover {
+    transform: none;
+  }
+}
+
 /* Background Patterns */
 .bg-pattern-grid {
   background-image: linear-gradient(

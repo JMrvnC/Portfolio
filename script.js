@@ -14,30 +14,45 @@ document.addEventListener('DOMContentLoaded', () => {
     burger?.addEventListener('click', toggleMobileMenu);
 
     function toggleMobileMenu() {
-        const isOpen = mobileMenu.classList.contains('h-[200px]');
+        const isOpen = mobileMenu.classList.contains('h-auto') || mobileMenu.style.height !== '0px' && mobileMenu.style.height !== '';
         const lines = burger.querySelectorAll('div');
 
-        if (isOpen) {
+        if (mobileMenu.classList.contains('h-0') === false && mobileMenu.classList.contains('h-auto')) {
             closeMobileMenu();
-        } else {
+        } else if (mobileMenu.classList.contains('h-0')) {
             mobileMenu.classList.remove('h-0');
-            mobileMenu.classList.add('h-[200px]');
+            mobileMenu.classList.add('h-auto');
+            mobileMenu.setAttribute('aria-hidden', 'false');
+            burger.setAttribute('aria-expanded', 'true');
 
-            lines[0]?.classList.add('rotate-45', 'translate-y-[5px]');
+            lines[0]?.classList.add('rotate-45', 'translate-y-[7px]');
             lines[1]?.classList.add('opacity-0');
-            lines[2]?.classList.add('-rotate-45', '-translate-y-[5px]');
+            lines[2]?.classList.add('-rotate-45', '-translate-y-[7px]');
+        } else {
+            closeMobileMenu();
         }
     }
 
     window.closeMobileMenu = () => {
         mobileMenu?.classList.add('h-0');
-        mobileMenu?.classList.remove('h-[200px]');
+        mobileMenu?.classList.remove('h-auto');
+        mobileMenu?.setAttribute('aria-hidden', 'true');
+        burger?.setAttribute('aria-expanded', 'false');
 
         const lines = burger?.querySelectorAll('div');
-        lines?.[0]?.classList.remove('rotate-45', 'translate-y-[5px]');
+        lines?.[0]?.classList.remove('rotate-45', 'translate-y-[7px]');
         lines?.[1]?.classList.remove('opacity-0');
-        lines?.[2]?.classList.remove('-rotate-45', '-translate-y-[5px]');
+        lines?.[2]?.classList.remove('-rotate-45', '-translate-y-[7px]');
     };
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (mobileMenu && !mobileMenu.contains(e.target) && !burger.contains(e.target)) {
+            if (mobileMenu.classList.contains('h-auto')) {
+                closeMobileMenu();
+            }
+        }
+    });
 
     // Scroll handler
     let isScrolling = false;
@@ -235,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     behavior: 'smooth'
                 });
 
-                if (mobileMenu?.classList.contains('h-[200px]')) {
+                if (mobileMenu?.classList.contains('h-auto')) {
                     closeMobileMenu();
                 }
             }
@@ -510,7 +525,7 @@ window.openProjectModal = function (projectId) {
     const modalContent = document.getElementById('modalContent');
 
     modalTitle.textContent = project.title; modalContent.innerHTML = `
-            <div class="space-y-6">
+            <div class="space-y-6 order-2 lg:order-1">
                 <div class="project-gallery">
                     ${project.images.map((image, index) => `
                         <div class="gallery-image modal-image-container">
@@ -522,35 +537,35 @@ window.openProjectModal = function (projectId) {
                     `).join('')}
                 </div>
             </div>
-        <div class="space-y-6">
+        <div class="space-y-6 order-1 lg:order-2">
             <div>
-                <div class="flex items-center gap-3 mb-4 flex-wrap">
-                    <h3 class="text-xl font-bold">Project Overview</h3>
-                    <span class="px-3 py-1 text-xs font-medium rounded-full ${project.status === 'Live' ? 'bg-green-100 text-green-800' :
+                <div class="flex items-center gap-2 sm:gap-3 mb-4 flex-wrap">
+                    <h3 class="text-lg sm:text-xl font-bold">Project Overview</h3>
+                    <span class="px-2 sm:px-3 py-1 text-xs font-medium rounded-full ${project.status === 'Live' ? 'bg-green-100 text-green-800' :
             project.status === 'Completed' ? 'bg-blue-100 text-blue-800' :
                 'bg-yellow-100 text-yellow-800'
         }">${project.status}</span>
-                    ${project.role ? `<span class="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700">${project.role}</span>` : ''}
+                    ${project.role ? `<span class="px-2 sm:px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700">${project.role}</span>` : ''}
                 </div>
-                <p class="text-gray-600 leading-relaxed">${project.longDescription}</p>
+                <p class="text-gray-600 leading-relaxed text-sm sm:text-base">${project.longDescription}</p>
             </div>
             
             <div>
-                <h4 class="text-lg font-bold mb-3">Technologies Used</h4>
+                <h4 class="text-base sm:text-lg font-bold mb-3">Technologies Used</h4>
                 <div class="flex flex-wrap gap-2">
                     ${project.technologies.map(tech => `
-                        <span class="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full">${tech}</span>
+                        <span class="px-2 sm:px-3 py-1 bg-primary/10 text-primary text-xs sm:text-sm font-medium rounded-full">${tech}</span>
                     `).join('')}
                 </div>
             </div>
             
             <div>
-                <h4 class="text-lg font-bold mb-3">Key Features</h4>
+                <h4 class="text-base sm:text-lg font-bold mb-3">Key Features</h4>
                 <ul class="space-y-2">
                     ${project.features.map(feature => `
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-check-circle text-primary mt-1 flex-shrink-0"></i>
-                            <span class="text-gray-600">${feature}</span>
+                        <li class="flex items-start gap-2 sm:gap-3">
+                            <i class="fas fa-check-circle text-primary mt-0.5 sm:mt-1 flex-shrink-0 text-sm"></i>
+                            <span class="text-gray-600 text-sm sm:text-base">${feature}</span>
                         </li>
                     `).join('')}
                 </ul>
@@ -558,7 +573,7 @@ window.openProjectModal = function (projectId) {
             
             ${project.link ? `
                 <div class="pt-4 border-t border-gray-200">
-                    <a href="${project.link}" target="_blank" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-md hover:bg-primary/90 transition-colors">
+                    <a href="${project.link}" target="_blank" class="inline-flex items-center gap-2 bg-primary text-white px-4 sm:px-6 py-2 sm:py-3 rounded-md hover:bg-primary/90 transition-colors text-sm sm:text-base">
                         <i class="fas fa-external-link-alt"></i>
                         Visit Live Project
                     </a>

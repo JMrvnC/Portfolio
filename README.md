@@ -32,7 +32,7 @@ currently_learning: ["Laravel 12", "PHP", "GIT"]
   <a href="https://www.facebook.com/MervinQCaballero" target="_blank">
     <img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" alt="Facebook"/>
   </a>
-  <a href="https://ifou.github.io/Ifou/" target="_blank">
+  <a href="https://jmrvnc.github.io/Ifou/" target="_blank">
     <img src="https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=todoist&logoColor=white" alt="Portfolio"/>
   </a>
 </p>
@@ -42,12 +42,12 @@ currently_learning: ["Laravel 12", "PHP", "GIT"]
 <br><br>
 
 <!-- GitHub Stats - Minimalist Cards -->
-<img width="49%" src="https://github-readme-stats.vercel.app/api?username=ifou&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=A9FEF7&icon_color=A9FEF7&text_color=C9D1D9" alt="GitHub Stats"/>
-<img width="49%" src="https://github-readme-streak-stats.herokuapp.com/?user=ifou&theme=tokyonight&hide_border=true&background=0D1117&ring=A9FEF7&fire=A9FEF7&currStreakLabel=A9FEF7" alt="GitHub Streak"/>
+<img width="49%" src="https://github-readme-stats.vercel.app/api?username=JMrvnC&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=A9FEF7&icon_color=A9FEF7&text_color=C9D1D9" alt="GitHub Stats"/>
+<img width="49%" src="https://github-readme-streak-stats.herokuapp.com/?user=JMrvnC&theme=tokyonight&hide_border=true&background=0D1117&ring=A9FEF7&fire=A9FEF7&currStreakLabel=A9FEF7" alt="GitHub Streak"/>
 
 <br>
 
-<img width="60%" src="https://github-readme-stats.vercel.app/api/top-langs?username=ifou&show_icons=true&locale=en&layout=compact&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=A9FEF7&text_color=C9D1D9" alt="Top Languages"/>
+<img width="60%" src="https://github-readme-stats.vercel.app/api/top-langs?username=JMrvnC&show_icons=true&locale=en&layout=compact&theme=tokyonight&hide_border=true&bg_color=0D1117&title_color=A9FEF7&text_color=C9D1D9" alt="Top Languages"/>
 
 <br><br>
 

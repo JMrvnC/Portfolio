@@ -111,7 +111,7 @@ Portfolio/
 - **Email**: jmeva.quimio12345@gmail.com
 - **Location**: Tanauan, Batangas
 - **LinkedIn**: [Mervin Caballero](https://www.linkedin.com/in/mervin-caballero-105230314/)
-- **GitHub**: [Ifou](https://github.com/Ifou)
+- **GitHub**: [JMrvnC](https://github.com/JMrvnC)
 - **Facebook**: [Mervin Caballero](https://www.facebook.com/MachipoiWTF)
 
 ## 🎓 Education

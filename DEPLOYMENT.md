@@ -49,7 +49,7 @@ Prefer editing `src/` and `public/` going forward.
 
 Config in `astro.config.mjs`:
 
-- `site`: `https://ifou.github.io`
+- `site`: `https://jmrvnc.github.io`
 - `base`: `/Ifou/`
 
 ## Hosting
@@ -63,7 +63,7 @@ Use the workflow in `.github/workflows/deploy.yml` instead:
 1. In the repo on GitHub: **Settings → Pages → Build and deployment → Source → GitHub Actions**
 2. Commit and push this repo (branch `portfolio` or `main`)
 3. Open the **Actions** tab and confirm **Deploy to GitHub Pages** succeeds
-4. Site URL: `https://ifou.github.io/Ifou/`
+4. Site URL: `https://jmrvnc.github.io/Ifou/`
 
 The workflow builds with Astro and deploys `dist/`. `public/.nojekyll` is included so Pages won’t re-run Jekyll on the built site.
 

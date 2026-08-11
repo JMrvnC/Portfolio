@@ -27,17 +27,6 @@ npm run preview
 - `public/Assets/` — images and resume
 - `public/script.js` — client interactions (modals, nav, form)
 
-### Legacy root files (temporary rollback)
-
-These remain during migration and are **not** used by the Astro build:
-
-- `index.html`
-- `script.js`
-- `animations.css`
-- `Assets/`
-
-Prefer editing `src/` and `public/` going forward.
-
 ## Build output
 
 `npm run build` produces:
@@ -118,8 +107,6 @@ Client-side validation only (`#contactForm` in `public/script.js`). For producti
 
 - Add projects in `src/pages/index.astro` and matching data in `public/script.js`
 - Update resume at `public/Assets/Resume.pdf`
-- Keep root legacy files until you confirm Astro parity, then remove them
-
 ---
 
 **Deployment status**: Astro build ready — deploy `dist/` after local preview check

@@ -1,0 +1,709 @@
+/* ==========================================================================
+   Classified dossier theme
+   Three colours only: ink (#0b0b0b), paper (#f2f0ea / #fff), stamp (#b31111).
+   Everything here is pure CSS -- no background images are shipped.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Paper ground
+   The grid and watermark live on the html background so every transparent
+   section shows them. The grain rides on top of the whole page as a fixed,
+   click-through overlay, which is what gives the photocopied-document feel.
+   -------------------------------------------------------------------------- */
+
+@layer base {
+
+html {
+  background-color: #f2f0ea;
+  background-image:
+    /* diagonal CLASSIFIED watermark */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='300'%3E%3Ctext x='10' y='190' font-family='Arial Narrow, Arial, sans-serif' font-size='54' font-weight='700' letter-spacing='8' fill='%230b0b0b' fill-opacity='0.05' transform='rotate(-24 230 150)'%3ECLASSIFIED%3C/text%3E%3C/svg%3E"),
+    /* graph-paper grid */
+    repeating-linear-gradient(
+      to right,
+      rgba(11, 11, 11, 0.05) 0 1px,
+      transparent 1px 32px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(11, 11, 11, 0.05) 0 1px,
+      transparent 1px 32px
+    );
+  background-attachment: fixed;
+}
+
+/* Body must stay transparent or it would hide the ground above. */
+body {
+  position: relative;
+  background: transparent;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+}
+
+}
+
+/* Sliding bar in the preloader */
+@keyframes decryptScan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+/* The "ACCESSING FILE" beat that flashes while the case folder opens */
+@keyframes bootFlash {
+  0% {
+    opacity: 0;
+  }
+  16% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Everything below sits in the components layer so Tailwind utilities written
+   in the markup (hover:text-stamp, border-*, and so on) still win. */
+@layer components {
+
+/* Translucent alternating band: tints a section without hiding the grid. */
+.band-tint {
+  background: rgba(11, 11, 11, 0.03);
+}
+
+.decrypt-bar {
+  animation: decryptScan 1.4s ease-in-out infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Typography primitives
+   -------------------------------------------------------------------------- */
+
+.font-stencil {
+  font-family: var(--font-stencil);
+  letter-spacing: 0.02em;
+}
+
+/* Small uppercase monospace metadata: "CLEARANCE: LEVEL 03" */
+.file-meta {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #4a4741;
+}
+
+.file-meta--ink {
+  color: var(--color-ink);
+}
+
+.file-meta--stamp {
+  color: var(--color-stamp);
+}
+
+/* Filled black label chip */
+.chip-ink {
+  display: inline-block;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 0.25rem 0.6rem;
+}
+
+.chip-stamp {
+  display: inline-block;
+  background: var(--color-stamp);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 0.25rem 0.6rem;
+}
+
+/* Outlined mono tag used for technologies */
+.tag-code {
+  display: inline-block;
+  border: 1px solid var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.2rem 0.5rem;
+  color: var(--color-ink);
+  background: transparent;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.tag-code:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* --------------------------------------------------------------------------
+   Rules and dividers
+   -------------------------------------------------------------------------- */
+
+.rule-double {
+  border: 0;
+  border-top: 3px solid var(--color-ink);
+  border-bottom: 1px solid var(--color-ink);
+  height: 4px;
+  background: transparent;
+}
+
+.rule-stamp {
+  border: 0;
+  border-top: 2px solid var(--color-stamp);
+  height: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Document sheets and file folders
+   -------------------------------------------------------------------------- */
+
+.doc-sheet {
+  position: relative;
+  background: var(--color-paper-raw);
+  border: 1px solid var(--color-ink);
+  box-shadow: 6px 6px 0 rgba(11, 11, 11, 0.08);
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.doc-sheet:hover {
+  box-shadow: 6px 6px 0 rgba(179, 17, 17, 0.35);
+  transform: translateY(-3px);
+}
+
+/* Registration / crop marks in the sheet corners */
+.corner-marks::before,
+.corner-marks::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+}
+
+.corner-marks::before {
+  top: 5px;
+  left: 5px;
+  border-top: 2px solid var(--color-stamp);
+  border-left: 2px solid var(--color-stamp);
+}
+
+.corner-marks::after {
+  bottom: 5px;
+  right: 5px;
+  border-bottom: 2px solid var(--color-stamp);
+  border-right: 2px solid var(--color-stamp);
+}
+
+/* Folder tab that sits on top of a project card */
+.file-tab {
+  display: inline-block;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 0.3rem 0.9rem;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 0 100%);
+  padding-right: 1.2rem;
+}
+
+/* --------------------------------------------------------------------------
+   Stamps
+   -------------------------------------------------------------------------- */
+
+.stamp {
+  display: inline-block;
+  font-family: var(--font-stencil);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-stamp);
+  border: 3px solid var(--color-stamp);
+  padding: 0.2rem 0.7rem;
+  transform: rotate(-6deg);
+  mix-blend-mode: multiply;
+  opacity: 0.88;
+  white-space: nowrap;
+}
+
+.stamp--ink {
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.stamp--flat {
+  transform: none;
+}
+
+.stamp--lg {
+  font-size: 1.5rem;
+  border-width: 4px;
+  padding: 0.35rem 1.1rem;
+}
+
+/* Stamp overlaid on the hero portrait. Sits over the top-right corner, which
+   is the lightest part of the photo, so the red stays legible. */
+.stamp-overlay {
+  position: absolute;
+  top: 1.1rem;
+  right: -0.85rem;
+  z-index: 2;
+  font-size: 1.05rem;
+  padding: 0.25rem 0.8rem;
+  background: rgba(242, 240, 234, 0.86);
+  transform: rotate(-8deg);
+}
+
+/* --------------------------------------------------------------------------
+   Redactions
+   A .redact is a real <button>. The bar is a background gradient so it can be
+   wiped away horizontally on reveal. Text stays in the DOM for screen readers.
+   -------------------------------------------------------------------------- */
+
+.redact {
+  display: inline;
+  font: inherit;
+  color: transparent;
+  border: 0;
+  padding: 0 0.2em;
+  margin: 0;
+  cursor: pointer;
+  text-align: inherit;
+  background-color: transparent;
+  background-image: linear-gradient(var(--color-ink), var(--color-ink));
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 100% 1.15em;
+  -webkit-user-select: none;
+  user-select: none;
+  transition:
+    background-size 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.2s ease 0.14s;
+}
+
+.redact:hover {
+  background-image: linear-gradient(var(--color-stamp), var(--color-stamp));
+}
+
+.redact:focus-visible {
+  outline: 2px solid var(--color-stamp);
+  outline-offset: 2px;
+}
+
+.redact.revealed {
+  color: var(--color-ink);
+  background-size: 0% 1.15em;
+  background-image: linear-gradient(var(--color-ink), var(--color-ink));
+  -webkit-user-select: text;
+  user-select: text;
+  box-shadow: inset 0 -0.15em 0 rgba(179, 17, 17, 0.35);
+}
+
+/* Declassify-all switch in the nav */
+.declassify-toggle {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  border: 1px solid var(--color-stamp);
+  color: var(--color-stamp);
+  padding: 0.3rem 0.7rem;
+  background: transparent;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.declassify-toggle:hover,
+.declassify-toggle[aria-pressed="true"] {
+  background: var(--color-stamp);
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   Imagery: grayscale at rest so screenshots never break the palette
+   -------------------------------------------------------------------------- */
+
+.evidence img,
+img.evidence {
+  filter: grayscale(1) contrast(1.08);
+  transition:
+    filter 0.35s ease,
+    transform 0.5s ease;
+}
+
+.evidence:hover img,
+img.evidence:hover {
+  filter: grayscale(0) contrast(1);
+}
+
+.image-zoom-overlay {
+  display: block;
+  position: absolute;
+  inset: auto 0 0 0;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 0.35rem 0.5rem;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.modal-image-container:hover .image-zoom-overlay {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Form controls: typed-on-a-form feel
+   -------------------------------------------------------------------------- */
+
+.field-dossier {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-ink);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  padding: 0.6rem 0.25rem;
+  color: var(--color-ink);
+}
+
+.field-dossier::placeholder {
+  color: #8c887f;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.6875rem;
+}
+
+.field-dossier:focus {
+  outline: none;
+  border-bottom: 2px solid var(--color-stamp);
+  background: rgba(179, 17, 17, 0.04);
+}
+
+.field-dossier.border-red-500 {
+  border-bottom: 2px solid var(--color-stamp);
+}
+
+.btn-dossier {
+  display: inline-block;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--color-ink);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.btn-dossier:hover {
+  background: var(--color-stamp);
+  border-color: var(--color-stamp);
+  color: #fff;
+}
+
+.btn-dossier--ghost {
+  background: transparent;
+  color: var(--color-ink);
+}
+
+.btn-dossier--ghost:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border-color: var(--color-ink);
+}
+
+/* --------------------------------------------------------------------------
+   Links
+   -------------------------------------------------------------------------- */
+
+.link-dossier {
+  color: var(--color-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-rule);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.link-dossier:hover {
+  color: var(--color-stamp);
+  border-bottom-color: var(--color-stamp);
+}
+
+/* Active nav item. script.js flags the current section by adding .text-primary,
+   which needs to out-specify the .file-meta colour on the same element. */
+.nav-item.text-primary {
+  color: var(--color-stamp);
+  border-bottom: 2px solid var(--color-stamp);
+}
+
+/* --------------------------------------------------------------------------
+   Case folder modal
+   Opening runs as a staged sequence: the cover rotates away, a terminal beat
+   flashes, the document rises out of the folder, and the stamp lands. Closing
+   replays it in reverse by swapping the transition delays.
+   -------------------------------------------------------------------------- */
+
+.dossier-folder {
+  position: relative;
+  width: 100%;
+  max-width: 72rem;
+  margin: auto;
+  perspective: 1400px;
+}
+
+.folder-sheet {
+  position: relative;
+  z-index: 1;
+  background: var(--color-paper-raw);
+  border: 2px solid var(--color-ink);
+  max-height: 88vh;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(28px) scale(0.985);
+  transition:
+    opacity 0.26s ease 0.34s,
+    transform 0.34s cubic-bezier(0.2, 0.8, 0.25, 1) 0.34s;
+}
+
+.dossier-folder.is-open .folder-sheet {
+  opacity: 1;
+  transform: none;
+}
+
+/* Folder cover */
+.folder-flap {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-paper);
+  border: 2px solid var(--color-ink);
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  backface-visibility: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  transition:
+    transform 0.44s cubic-bezier(0.35, 0.02, 0.2, 1),
+    opacity 0.18s ease 0.3s;
+}
+
+.dossier-folder.is-open .folder-flap {
+  transform: rotateX(-116deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.folder-flap-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.folder-flap-tab {
+  background: var(--color-stamp);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  padding: 0.3rem 0.9rem;
+}
+
+.folder-flap-title {
+  font-family: var(--font-stencil);
+  font-size: clamp(1.5rem, 5vw, 2.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--color-ink);
+}
+
+.folder-flap-note {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #6b675f;
+  max-width: 22rem;
+}
+
+/* Terminal beat */
+.folder-boot {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dossier-folder.is-open .folder-boot {
+  animation: bootFlash 0.8s ease forwards;
+}
+
+.folder-boot-line {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-paper);
+}
+
+.folder-boot-bar {
+  width: 12rem;
+  height: 2px;
+  background: rgba(242, 240, 234, 0.25);
+  overflow: hidden;
+}
+
+.folder-boot-bar span {
+  display: block;
+  width: 33%;
+  height: 100%;
+  background: var(--color-stamp);
+}
+
+/* Stamp that lands once the file is open. Sits clear of the close button in
+   the sheet header, which shares this corner. */
+.folder-stamp {
+  position: absolute;
+  top: -0.9rem;
+  right: 5rem;
+  z-index: 4;
+  mix-blend-mode: normal;
+  background: rgba(242, 240, 234, 0.94);
+  opacity: 0;
+  transform: rotate(-20deg) scale(2.1);
+  transition:
+    opacity 0.14s ease 0.62s,
+    transform 0.26s cubic-bezier(0.2, 1.5, 0.4, 1) 0.62s;
+  pointer-events: none;
+}
+
+.dossier-folder.is-open .folder-stamp {
+  opacity: 0.95;
+  transform: rotate(-9deg) scale(1);
+}
+
+/* Closing: same states, compressed and re-ordered delays */
+.dossier-folder.is-closing .folder-stamp {
+  transition:
+    opacity 0.1s ease,
+    transform 0.16s ease;
+}
+
+.dossier-folder.is-closing .folder-sheet {
+  transition:
+    opacity 0.16s ease 0.04s,
+    transform 0.2s ease 0.04s;
+}
+
+.dossier-folder.is-closing .folder-flap {
+  transition:
+    transform 0.3s cubic-bezier(0.35, 0.02, 0.2, 1) 0.16s,
+    opacity 0.12s ease 0.16s;
+}
+
+@media (max-width: 640px) {
+  .folder-sheet {
+    max-height: 92vh;
+  }
+
+  /* No room for it beside the close button on a phone-width header */
+  .folder-stamp {
+    display: none;
+  }
+}
+
+}
+
+/* --------------------------------------------------------------------------
+   Motion preferences
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .redact,
+  .doc-sheet,
+  .evidence img,
+  img.evidence,
+  .image-zoom-overlay,
+  .folder-sheet,
+  .folder-flap,
+  .folder-stamp {
+    transition: none !important;
+  }
+
+  .doc-sheet:hover {
+    transform: none;
+  }
+
+  .decrypt-bar {
+    animation: none;
+  }
+
+  /* Skip the folder theatrics entirely and just present the document. */
+  .folder-flap,
+  .folder-boot {
+    display: none !important;
+  }
+
+  .dossier-folder .folder-sheet {
+    opacity: 1;
+    transform: none;
+  }
+
+  .dossier-folder .folder-stamp {
+    opacity: 0.95;
+    transform: rotate(-9deg) scale(1);
+    animation: none;
+  }
+}

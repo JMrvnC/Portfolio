@@ -1,0 +1,43 @@
+---
+import { thumbnailFor, type Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+  fileNumber: string;
+  totalFiles: string;
+}
+
+const { project, fileNumber, totalFiles } = Astro.props;
+const statusChip = project.status === 'Completed' ? 'chip-ink' : 'chip-stamp';
+---
+
+<article class="flex flex-col" data-animate>
+  <span class="file-tab self-start">File {fileNumber} / {totalFiles}</span>
+  <div class="doc-sheet corner-marks flex flex-col flex-grow">
+    <div class="evidence h-52 overflow-hidden border-b border-ink">
+      <img
+        src={thumbnailFor(project)}
+        alt={project.title}
+        class="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </div>
+    <div class="p-5 flex flex-col flex-grow">
+      <div class="flex items-start justify-between gap-3 mb-3">
+        <h3 class="font-stencil text-xl uppercase text-ink leading-tight">{project.title}</h3>
+        <span class={`${statusChip} flex-shrink-0`}>{project.status}</span>
+      </div>
+      <p class="text-accent text-sm mb-4 flex-grow leading-relaxed">{project.summary}</p>
+      <div class="flex flex-wrap gap-1.5 mb-4">
+        {project.cardTech.map((tech) => <span class="tag-code">{tech}</span>)}
+      </div>
+      <button
+        type="button"
+        data-project={project.id}
+        class="project-open file-meta file-meta--ink text-left border-t border-ink pt-3 hover:text-stamp transition-colors"
+      >
+        Open File &rarr;
+      </button>
+    </div>
+  </div>
+</article>

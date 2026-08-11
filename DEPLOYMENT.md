@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Dev server serves the site with base path `/Ifou/` (same as GitHub Pages).
+Dev server serves the site with base path `/Portfolio/` (same as GitHub Pages).
 
 ```bash
 npm run build
@@ -50,7 +50,7 @@ Prefer editing `src/` and `public/` going forward.
 Config in `astro.config.mjs`:
 
 - `site`: `https://jmrvnc.github.io`
-- `base`: `/Ifou/`
+- `base`: `/Portfolio/`
 
 ## Hosting
 
@@ -63,7 +63,7 @@ Use the workflow in `.github/workflows/deploy.yml` instead:
 1. In the repo on GitHub: **Settings → Pages → Build and deployment → Source → GitHub Actions**
 2. Commit and push this repo (branch `portfolio` or `main`)
 3. Open the **Actions** tab and confirm **Deploy to GitHub Pages** succeeds
-4. Site URL: `https://jmrvnc.github.io/Ifou/`
+4. Site URL: `https://jmrvnc.github.io/Portfolio/`
 
 The workflow builds with Astro and deploys `dist/`. `public/.nojekyll` is included so Pages won’t re-run Jekyll on the built site.
 
@@ -71,7 +71,7 @@ The workflow builds with Astro and deploys `dist/`. `public/.nojekyll` is includ
 
 1. Build command: `npm run build`
 2. Publish directory: `dist`
-3. If the site is at the domain root (not `/Ifou/`), set `base: '/'` in `astro.config.mjs` before building
+3. If the site is at the domain root (not `/Portfolio/`), set `base: '/'` in `astro.config.mjs` before building
 
 ### Option 3: Hostinger / static FTP
 
@@ -100,8 +100,8 @@ The workflow builds with Astro and deploys `dist/`. `public/.nojekyll` is includ
    - Resume download opens `Assets/Resume.pdf`
 
 3. **Base path**
-   - CSS loads from `/Ifou/_astro/...`
-   - Script loads from `/Ifou/script.js`
+   - CSS loads from `/Portfolio/_astro/...`
+   - Script loads from `/Portfolio/script.js`
 
 4. **Accessibility**
    - Skip link, keyboard nav, focus states still work

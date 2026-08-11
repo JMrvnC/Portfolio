@@ -32,7 +32,7 @@ currently_learning: ["Laravel 12", "PHP", "GIT"]
   <a href="https://www.facebook.com/MervinQCaballero" target="_blank">
     <img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" alt="Facebook"/>
   </a>
-  <a href="https://jmrvnc.github.io/Ifou/" target="_blank">
+  <a href="https://jmrvnc.github.io/Portfolio/" target="_blank">
     <img src="https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=todoist&logoColor=white" alt="Portfolio"/>
   </a>
 </p>

@@ -1,0 +1,51 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Mervin Caballero | Full Stack Developer',
+  description =
+    'Mervin Caballero - Full Stack Developer specializing in AR/VR, Flutter, and modern web technologies. Creating immersive digital experiences.',
+} = Astro.props;
+
+const ogDescription =
+  'Full Stack Developer specializing in AR/VR, Flutter, and modern web technologies';
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="Full Stack Developer, AR Developer, Flutter, Unity, Web Development, Portfolio"
+    />
+    <meta name="author" content="Mervin Caballero" />
+    <meta property="og:title" content="Mervin Caballero | Full Stack Developer" />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ifou.github.io/Ifou/" />
+    <title>{title}</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="font-sans bg-gray-50 text-gray-800">
+    <slot />
+  </body>
+</html>

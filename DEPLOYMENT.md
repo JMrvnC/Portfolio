@@ -1,145 +1,126 @@
 # Portfolio Deployment Guide
 
-## Files to Deploy
+This site is an **Astro** static project. Build output goes to `dist/` and is what you deploy.
 
-### Core Files (Required)
+## Local development
 
-- `index.html` - Main portfolio page
-- `script-optimized.js` - Optimized JavaScript functionality
-- `animations-optimized.css` - Optimized CSS animations
-- `Files/` directory - All project images and resume
+```bash
+npm install
+npm run dev
+```
 
-### Legacy Files (Can be removed)
+Dev server serves the site with base path `/Ifou/` (same as GitHub Pages).
 
-- `script.js` - Original unoptimized JavaScript
-- `animations.css` - Original unoptimized CSS
+```bash
+npm run build
+npm run preview
+```
 
-## Optimizations Made
+## Project layout (Astro)
 
-### 1. Performance Improvements
+### Source (edit these)
 
-- ✅ Reduced JavaScript file size by 40%
-- ✅ Optimized CSS animations for better performance
-- ✅ Added lazy loading for images
-- ✅ Implemented efficient scroll handling with throttling
-- ✅ Removed redundant code and unused functions
+- `src/pages/index.astro` — main page body
+- `src/layouts/BaseLayout.astro` — document shell, meta, fonts
+- `src/styles/global.css` — Tailwind + page styles
+- `src/styles/animations.css` — animation library
+- `public/Assets/` — images and resume
+- `public/script.js` — client interactions (modals, nav, form)
 
-### 2. Code Structure Fixes
+### Legacy root files (temporary rollback)
 
-- ✅ Fixed inconsistent file path separators (backslash to forward slash)
-- ✅ Improved semantic HTML structure
-- ✅ Added proper ARIA labels and roles
-- ✅ Implemented skip links for accessibility
-- ✅ Consolidated animation systems
+These remain during migration and are **not** used by the Astro build:
 
-### 3. SEO and Accessibility
+- `index.html`
+- `script.js`
+- `animations.css`
+- `Assets/`
 
-- ✅ Added proper meta tags and Open Graph data
-- ✅ Improved alt text for images
-- ✅ Added proper heading hierarchy
-- ✅ Implemented keyboard navigation support
-- ✅ Added focus management
+Prefer editing `src/` and `public/` going forward.
 
-### 4. Content Matching
+## Build output
 
-- ✅ Updated project descriptions to match actual work
-- ✅ Corrected image paths and alt text
-- ✅ Improved resume download link
-- ✅ Enhanced contact information display
+`npm run build` produces:
 
-## Hosting Recommendations
+- `dist/index.html`
+- `dist/script.js`
+- `dist/Assets/`
+- `dist/_astro/` (bundled CSS)
 
-### Option 1: GitHub Pages (Free)
+Config in `astro.config.mjs`:
 
-1. Create a GitHub repository
-2. Upload all files to the main branch
-3. Enable GitHub Pages in repository settings
-4. Access via `https://username.github.io/repository-name`
+- `site`: `https://ifou.github.io`
+- `base`: `/Ifou/`
 
-### Option 2: Netlify (Free tier available)
+## Hosting
 
-1. Drag and drop the entire project folder
-2. Automatic deployment with custom domain support
-3. Form handling capabilities for contact form
+### Option 1: GitHub Pages (recommended for this repo)
 
-### Option 3: Hostinger (Current hosting)
+1. Run `npm run build`
+2. Publish the contents of `dist/` to the branch/folder GitHub Pages uses
+   - Common pattern: deploy `dist` to `gh-pages`, or use a GitHub Action that builds and deploys
+3. Ensure Pages is served from that deploy target
+4. Site URL: `https://ifou.github.io/Ifou/`
 
-1. Upload files via FTP or file manager
-2. Maintain current domain setup
-3. Optimize server configuration for static files
+If you use a GitHub Action, the workflow should:
 
-## Browser Compatibility
+1. `npm ci`
+2. `npm run build`
+3. Upload `dist/` as the Pages artifact / publish directory
 
-- ✅ Chrome 90+
-- ✅ Firefox 88+
-- ✅ Safari 14+
-- ✅ Edge 90+
-- ✅ Mobile browsers (iOS Safari, Chrome Mobile)
+### Option 2: Netlify
 
-## Performance Checklist
+1. Build command: `npm run build`
+2. Publish directory: `dist`
+3. If the site is at the domain root (not `/Ifou/`), set `base: '/'` in `astro.config.mjs` before building
 
-- ✅ Images optimized for web
-- ✅ CSS and JS minified
-- ✅ Font loading optimized
-- ✅ Lazy loading implemented
-- ✅ Animation performance optimized
-- ✅ Mobile responsiveness tested
+### Option 3: Hostinger / static FTP
 
-## Final Testing Steps
+1. Run `npm run build` locally
+2. Upload everything inside `dist/` to the web root (or subdirectory matching `base`)
 
-1. **Functionality Test**
+## Browser compatibility
 
-   - Navigation links work correctly
-   - Mobile menu toggles properly
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+## Pre-deploy checklist
+
+1. **Functionality**
+   - Navigation links work
+   - Mobile menu toggles
    - Contact form validation works
-   - Smooth scrolling functions
-   - All animations trigger correctly
+   - Project and image modals open/close
+   - Smooth scrolling and scroll-to-top work
 
-2. **Performance Test**
+2. **Assets**
+   - Images under `Assets/` load (including filenames with spaces)
+   - Resume download opens `Assets/Resume.pdf`
 
-   - Page load time under 3 seconds
-   - No console errors
-   - All images load properly
-   - Animations are smooth
+3. **Base path**
+   - CSS loads from `/Ifou/_astro/...`
+   - Script loads from `/Ifou/script.js`
 
-3. **Accessibility Test**
+4. **Accessibility**
+   - Skip link, keyboard nav, focus states still work
 
-   - Tab navigation works throughout site
-   - Screen reader compatibility
-   - Sufficient color contrast
-   - Skip links function properly
+## Contact form
 
-4. **Mobile Test**
-   - All sections display correctly
-   - Touch interactions work
-   - Text is readable without zooming
-   - Images scale appropriately
+Client-side validation only (`#contactForm` in `public/script.js`). For production delivery:
 
-## Maintenance Notes
+1. Netlify Forms (if on Netlify)
+2. Formspree or similar
+3. A small backend (PHP/Node)
 
-- Update resume PDF as needed
-- Add new projects to portfolio section
-- Keep contact information current
-- Monitor performance metrics
-- Update dependencies periodically
+## Maintenance notes
 
-## Contact Form Integration
-
-The current contact form uses client-side validation only. For production:
-
-1. **Option 1**: Use Netlify Forms (if hosting on Netlify)
-2. **Option 2**: Integrate with Formspree or similar service
-3. **Option 3**: Implement backend with PHP/Node.js
-
-## Analytics Integration
-
-Consider adding:
-
-- Google Analytics 4
-- Performance monitoring
-- User behavior tracking
-- Conversion tracking for contact form
+- Add projects in `src/pages/index.astro` and matching data in `public/script.js`
+- Update resume at `public/Assets/Resume.pdf`
+- Keep root legacy files until you confirm Astro parity, then remove them
 
 ---
 
-**Deployment Status**: Ready for production ✅
+**Deployment status**: Astro build ready — deploy `dist/` after local preview check

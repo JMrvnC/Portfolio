@@ -1,0 +1,599 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const scriptSrc = `${import.meta.env.BASE_URL}script.js`;
+---
+<BaseLayout>
+<!-- Skip Links for Accessibility -->
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white px-4 py-2 rounded-md z-[10000]">Skip
+        to main content</a>
+
+    <!-- Preloader -->
+    <div id="preloader"
+        class="fixed top-0 left-0 w-full h-full bg-white z-[9999] flex items-center justify-center transition-opacity duration-300">
+        <div class="text-primary text-sm">Loading...</div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 transition-all duration-300 px-4 sm:px-6 lg:px-8 py-3 sm:py-4"
+        id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="#home" class="font-medium text-base sm:text-lg tracking-tight text-primary"
+                aria-label="Mervin Caballero - Home">
+                Mervin Caballero
+            </a>
+            <div class="hidden md:flex items-center gap-6 lg:gap-8">
+                <a href="#home" class="nav-item text-secondary hover:text-primary transition-colors text-sm">Home</a>
+                <a href="#projects"
+                    class="nav-item text-secondary hover:text-primary transition-colors text-sm">Work</a>
+                <a href="#about" class="nav-item text-secondary hover:text-primary transition-colors text-sm">About</a>
+                <a href="#contact"
+                    class="nav-item text-secondary hover:text-primary transition-colors text-sm">Contact</a>
+            </div>
+            <button class="md:hidden cursor-pointer p-2 -mr-2" id="burger" aria-label="Toggle mobile menu"
+                aria-expanded="false">
+                <div class="w-5 h-0.5 bg-secondary my-1 transition-all duration-300"></div>
+                <div class="w-5 h-0.5 bg-secondary my-1 transition-all duration-300"></div>
+                <div class="w-5 h-0.5 bg-secondary my-1 transition-all duration-300"></div>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="fixed top-[57px] sm:top-[65px] right-0 h-0 w-full md:hidden bg-white border-b border-gray-200 overflow-hidden transition-all duration-300 z-40 shadow-lg"
+        id="mobile-menu" role="menu" aria-hidden="true">
+        <div class="flex flex-col items-start gap-1 py-4 px-6">
+            <a href="#home"
+                class="nav-item text-secondary text-base py-3 w-full hover:text-primary hover:bg-gray-50 px-2 rounded transition-colors"
+                onclick="closeMobileMenu()" role="menuitem">Home</a>
+            <a href="#projects"
+                class="nav-item text-secondary text-base py-3 w-full hover:text-primary hover:bg-gray-50 px-2 rounded transition-colors"
+                onclick="closeMobileMenu()" role="menuitem">Work</a>
+            <a href="#about"
+                class="nav-item text-secondary text-base py-3 w-full hover:text-primary hover:bg-gray-50 px-2 rounded transition-colors"
+                onclick="closeMobileMenu()" role="menuitem">About</a>
+            <a href="#contact"
+                class="nav-item text-secondary text-base py-3 w-full hover:text-primary hover:bg-gray-50 px-2 rounded transition-colors"
+                onclick="closeMobileMenu()" role="menuitem">Contact</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <main id="main-content">
+        <section id="home" class="hero min-h-screen flex items-center bg-white pt-16 sm:pt-20" role="banner">
+            <div class="container max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <div class="max-w-3xl space-y-4 sm:space-y-6 text-center lg:text-left">
+                        <h1
+                            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-primary leading-tight opacity-0 animate-slide-in-left">
+                            Mervin Caballero
+                        </h1>
+                        <p class="text-secondary text-lg sm:text-xl leading-relaxed opacity-0 animate-slide-in-left"
+                            style="animation-delay: 0.2s">
+                            Full Stack Developer
+                        </p>
+                        <p class="text-accent text-base max-w-2xl leading-relaxed opacity-0 animate-slide-in-left"
+                            style="animation-delay: 0.3s">
+                            Creating immersive digital experiences with 1 year of experience in web applications and AR
+                            solutions.
+                        </p>
+                        <div class="flex flex-wrap gap-4 justify-center lg:justify-start opacity-0 animate-slide-in-left"
+                            style="animation-delay: 0.4s">
+                            <a href="#projects"
+                                class="px-6 py-3 bg-primary text-white text-sm hover:bg-secondary transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                                View Work
+                            </a>
+                            <a href="#contact"
+                                class="px-6 py-3 border border-primary text-primary text-sm hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-0.5">
+                                Contact
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center lg:justify-end opacity-0 animate-slide-in-right order-first lg:order-last"
+                        style="animation-delay: 0.2s">
+                        <div
+                            class="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem] border border-gray-300 overflow-hidden hover:border-primary transition-all duration-500 hover:shadow-xl">
+                            <img src="Assets/ME.jpg" alt="Mervin Caballero - Full Stack Developer"
+                                class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                                loading="lazy">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tech stack -->
+                <div class="mt-12 sm:mt-16 lg:mt-24 max-w-3xl mx-auto lg:mx-0 opacity-0 animate-fade-in"
+                    style="animation-delay: 0.5s">
+                    <p class="text-secondary mb-4 sm:mb-6 text-sm text-center lg:text-left">Technologies</p>
+                    <div class="flex flex-wrap gap-2 sm:gap-3 justify-center lg:justify-start">
+                        <span
+                            class="px-3 py-1.5 border border-gray-300 text-secondary text-xs hover:border-primary hover:text-primary transition-all duration-300 hover:-translate-y-1">Flutter</span>
+                        <span
+                            class="px-3 py-1.5 border border-gray-300 text-secondary text-xs hover:border-primary hover:text-primary transition-all duration-300 hover:-translate-y-1">Unity
+                            AR</span>
+                        <span
+                            class="px-3 py-1.5 border border-gray-300 text-secondary text-xs hover:border-primary hover:text-primary transition-all duration-300 hover:-translate-y-1">ARCore/ARKit</span>
+                        <span
+                            class="px-3 py-1.5 border border-gray-300 text-secondary text-xs hover:border-primary hover:text-primary transition-all duration-300 hover:-translate-y-1">Node.js</span>
+                        <span
+                            class="px-3 py-1.5 border border-gray-300 text-secondary text-xs hover:border-primary hover:text-primary transition-all duration-300 hover:-translate-y-1">Laravel</span>
+                        <span
+                            class="px-3 py-1.5 border border-gray-300 text-secondary text-xs hover:border-primary hover:text-primary transition-all duration-300 hover:-translate-y-1">3D
+                            Modeling</span>
+                        <span
+                            class="px-3 py-1.5 border border-gray-300 text-secondary text-xs hover:border-primary hover:text-primary transition-all duration-300 hover:-translate-y-1">Hostinger</span>
+                        <span
+                            class="px-3 py-1.5 border border-gray-300 text-secondary text-xs hover:border-primary hover:text-primary transition-all duration-300 hover:-translate-y-1">Tailwind
+                            CSS</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-16 sm:py-20 lg:py-24 bg-light border-t border-gray-200">
+            <div class="container max-w-6xl mx-auto px-4 sm:px-6">
+                <div class="mb-10 sm:mb-16 max-w-3xl">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold mb-4 text-primary">
+                        Work Experience
+                    </h2>
+                </div>
+
+                <!-- Projects Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    <!-- Project Card 1 -->
+                    <div class="bg-white border border-gray-200 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-primary group"
+                        data-animate>
+                        <div class="h-56 overflow-hidden border-b border-gray-200">
+                            <img src="Assets/Images/Unity/nakatayo head.jpg" alt="ARtifacts Explorer"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-lg font-medium mb-2 text-primary">ARtifacts Explorer</h3>
+                            <p class="text-accent text-sm mb-4 flex-grow">AR museum platform featuring interactive
+                                artifact exploration through Unity AR and web integration.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">Unity AR</span>
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">ARCore</span>
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">3D Modeling</span>
+                            </div>
+                            <button onclick="openProjectModal('artifacts')"
+                                class="text-sm text-primary hover:text-secondary transition-colors text-left">
+                                View Details →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div class="bg-white border border-gray-200 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-primary group"
+                        data-animate>
+                        <div class="h-56 overflow-hidden border-b border-gray-200">
+                            <img src="Assets/Images/ArtExpo/Sunset.png" alt="ArtExpo"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-lg font-medium mb-2 text-primary">ArtExpo</h3>
+                            <p class="text-accent text-sm mb-4 flex-grow">Art e-commerce platform with portfolio
+                                management and secure payment processing.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">WordPress</span>
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">WooCommerce</span>
+                            </div>
+                            <button onclick="openProjectModal('artexpo')"
+                                class="text-sm text-primary hover:text-secondary transition-colors text-left">
+                                View Details →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 3 -->
+                    <div class="bg-white border border-gray-200 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-primary group"
+                        data-animate>
+                        <div class="h-56 overflow-hidden border-b border-gray-200">
+                            <img src="Assets/Images/Arktech/arktech.png" alt="Arktech Website"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-lg font-medium mb-2 text-primary">Arktech Website</h3>
+                            <p class="text-accent text-sm mb-4 flex-grow">Full-stack PHP solution with custom CMS for HR
+                                management and application tracking.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">PHP</span>
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">CMS</span>
+                            </div>
+                            <button onclick="openProjectModal('arktech-web')"
+                                class="text-sm text-primary hover:text-secondary transition-colors text-left">
+                                View Details →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 4 - SaktoSpace -->
+                    <div class="bg-white border border-gray-200 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-primary group"
+                        data-animate>
+                        <div class="h-56 overflow-hidden border-b border-gray-200">
+                            <img src="Assets/Images/SaktoSpace/SaktoShopProducts.jpg" alt="SaktoSpace AR E-commerce"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-lg font-medium mb-2 text-primary">SaktoSpace</h3>
+                            <p class="text-accent text-sm mb-4 flex-grow">AR e-commerce platform with Flutter frontend
+                                and Laravel backend. Assisted in development.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">Flutter</span>
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">Laravel</span>
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">AR</span>
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">MySQL</span>
+                            </div>
+                            <button onclick="openProjectModal('sakto-space')"
+                                class="text-sm text-primary hover:text-secondary transition-colors text-left">
+                                View Details →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 5 - SentriSafe -->
+                    <div class="bg-white border border-gray-200 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-primary group"
+                        data-animate>
+                        <div class="h-56 overflow-hidden border-b border-gray-200">
+                            <img src="Assets/Images/SentriSafe/ssCrimeMap.jpg" alt="SentriSafe Crime Reporting"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-lg font-medium mb-2 text-primary">SentriSafe</h3>
+                            <p class="text-accent text-sm mb-4 flex-grow">Crime reporting app with map integration and
+                                community features. Assisted in development.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">Flutter</span>
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">Laravel</span>
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">Maps</span>
+                            </div>
+                            <button onclick="openProjectModal('sentrisafe')"
+                                class="text-sm text-primary hover:text-secondary transition-colors text-left">
+                                View Details →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 6 - SohoCafe -->
+                    <div class="bg-white border border-gray-200 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-primary group"
+                        data-animate>
+                        <div class="h-56 overflow-hidden border-b border-gray-200">
+                            <img src="Assets/Images/SohoCafe/SohoCafeHome.jpg" alt="SohoCafe E-commerce"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-lg font-medium mb-2 text-primary">SohoCafe</h3>
+                            <p class="text-accent text-sm mb-4 flex-grow">Cafe e-commerce platform with ordering system
+                                and admin dashboard.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">Flutter</span>
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">Laravel</span>
+                                <span class="px-2 py-1 border border-gray-300 text-accent text-xs">E-commerce</span>
+                            </div>
+                            <button onclick="openProjectModal('sohocafe')"
+                                class="text-sm text-primary hover:text-secondary transition-colors text-left">
+                                View Details →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-16 sm:py-20 lg:py-24 bg-white border-t border-gray-200">
+            <div class="container max-w-6xl mx-auto px-4 sm:px-6">
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+                    <div class="lg:col-span-2">
+                        <p class="text-accent text-sm mb-2 uppercase tracking-wider opacity-0 animate-fade-in">About Me
+                        </p>
+                        <h2 class="text-3xl md:text-4xl font-semibold mb-6 text-primary opacity-0 animate-slide-up"
+                            style="animation-delay: 0.1s">
+                            My Professional Journey
+                        </h2>
+
+                        <p class="text-accent text-base mb-8 leading-relaxed opacity-0 animate-fade-in"
+                            style="animation-delay: 0.2s">
+                            With 1 year of experience in full-stack development and emerging technologies, I specialize
+                            in creating immersive digital experiences that bridge the physical and digital worlds. From
+                            traditional web applications to cutting-edge AR solutions, I focus on delivering innovative
+                            technology that enhances user engagement.
+                        </p>
+
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-start gap-3 opacity-0 animate-slide-in-left"
+                                style="animation-delay: 0.3s">
+                                <div
+                                    class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 hover:bg-primary hover:scale-110">
+                                    <span class="text-lg">🎓</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-primary">Batangas State University</h3>
+                                    <p class="text-accent text-sm">Information Technology, 2025</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 opacity-0 animate-slide-in-left"
+                                style="animation-delay: 0.4s">
+                                <div
+                                    class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 hover:bg-primary hover:scale-110">
+                                    <span class="text-lg">💼</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-primary">1 Year Experience</h3>
+                                    <p class="text-accent text-sm">Full-stack development</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 opacity-0 animate-slide-in-left"
+                                style="animation-delay: 0.5s">
+                                <div
+                                    class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 hover:bg-primary hover:scale-110">
+                                    <span class="text-lg">🔧</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-primary">6 Projects</h3>
+                                    <p class="text-accent text-sm">Delivered successfully</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="Assets/Resume.pdf" target="_blank" rel="noopener noreferrer"
+                            class="inline-block text-sm text-primary hover:text-secondary transition-colors border-b border-primary">
+                            Download Resume →
+                        </a>
+                    </div>
+
+                    <div class="lg:col-span-3">
+                        <div
+                            class="bg-gray-50 border border-gray-200 p-4 sm:p-6 lg:p-8 transition-all duration-300 hover:shadow-lg hover:border-primary">
+                            <h3 class="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-primary opacity-0 animate-fade-in"
+                                style="animation-delay: 0.3s">Skills & Expertise</h3>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-6 sm:mb-8">
+                                <div class="opacity-0 animate-slide-up" style="animation-delay: 0.4s">
+                                    <h4 class="font-medium text-primary mb-4">Mobile & AR Development</h4>
+                                    <ul class="space-y-2 text-sm text-accent">
+                                        <li
+                                            class="flex items-start gap-2 transition-all duration-200 hover:text-primary hover:translate-x-1">
+                                            <span class="text-primary mt-0.5">•</span>
+                                            Flutter & Dart
+                                        </li>
+                                        <li
+                                            class="flex items-start gap-2 transition-all duration-200 hover:text-primary hover:translate-x-1">
+                                            <span class="text-primary mt-0.5">•</span>
+                                            Unity AR Development
+                                        </li>
+                                        <li
+                                            class="flex items-start gap-2 transition-all duration-200 hover:text-primary hover:translate-x-1">
+                                            <span class="text-primary mt-0.5">•</span>
+                                            ARCore & ARKit
+                                        </li>
+                                        <li
+                                            class="flex items-start gap-2 transition-all duration-200 hover:text-primary hover:translate-x-1">
+                                            <span class="text-primary mt-0.5">•</span> AR
+                                            Flutter Plugin
+                                        </li>
+                                        <li
+                                            class="flex items-start gap-2 transition-all duration-200 hover:text-primary hover:translate-x-1">
+                                            <span class="text-primary mt-0.5">•</span> 3D
+                                            Modeling & Blender
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="opacity-0 animate-slide-up" style="animation-delay: 0.5s">
+                                    <h4 class="font-medium text-primary mb-4">Web Development</h4>
+                                    <ul class="space-y-2 text-sm text-accent">
+                                        <li
+                                            class="flex items-start gap-2 transition-all duration-200 hover:text-primary hover:translate-x-1">
+                                            <span class="text-primary mt-0.5">•</span>
+                                            PHP & Laravel
+                                        </li>
+                                        <li
+                                            class="flex items-start gap-2 transition-all duration-200 hover:text-primary hover:translate-x-1">
+                                            <span class="text-primary mt-0.5">•</span>
+                                            Node.js & JavaScript
+                                        </li>
+                                        <li
+                                            class="flex items-start gap-2 transition-all duration-200 hover:text-primary hover:translate-x-1">
+                                            <span class="text-primary mt-0.5">•</span>
+                                            WordPress & WooCommerce
+                                        </li>
+                                        <li
+                                            class="flex items-start gap-2 transition-all duration-200 hover:text-primary hover:translate-x-1">
+                                            <span class="text-primary mt-0.5">•</span>
+                                            Laravel Livewire
+                                        </li>
+                                        <li
+                                            class="flex items-start gap-2 transition-all duration-200 hover:text-primary hover:translate-x-1">
+                                            <span class="text-primary mt-0.5">•</span>
+                                            Tailwind CSS
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="mb-8">
+                                <h4 class="font-medium text-primary mb-4">Project Experience</h4>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="space-y-2 text-sm text-accent">
+                                        <p class="flex items-start gap-2"><span class="text-primary"></span> AR Museum
+                                            Applications</p>
+                                        <p class="flex items-start gap-2"><span class="text-primary"></span>
+                                            E-commerce Platforms</p>
+                                        <p class="flex items-start gap-2"><span class="text-primary"></span> Flutter
+                                            Mobile Apps</p>
+                                    </div>
+                                    <div class="space-y-2 text-sm text-accent">
+                                        <p class="flex items-start gap-2"><span class="text-primary"></span> Custom
+                                            CMS Development</p>
+                                        <p class="flex items-start gap-2"><span class="text-primary"></span> HR
+                                            Management Systems</p>
+                                        <p class="flex items-start gap-2"><span class="text-primary"></span>
+                                            Full-Stack Web Solutions</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="font-medium text-primary mb-4">Database & Tools</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span
+                                        class="px-3 py-1.5 bg-white border border-gray-300 text-accent text-xs">MySQL</span>
+                                    <span
+                                        class="px-3 py-1.5 bg-white border border-gray-300 text-accent text-xs">Hostinger</span>
+                                    <span
+                                        class="px-3 py-1.5 bg-white border border-gray-300 text-accent text-xs">GitHub</span>
+                                    <span class="px-3 py-1.5 bg-white border border-gray-300 text-accent text-xs">Git
+                                        Version Control</span>
+                                    <span
+                                        class="px-3 py-1.5 bg-white border border-gray-300 text-accent text-xs">Python</span>
+                                    <span
+                                        class="px-3 py-1.5 bg-white border border-gray-300 text-accent text-xs">HTML/CSS</span>
+                                    <span
+                                        class="px-3 py-1.5 bg-white border border-gray-300 text-accent text-xs">Responsive
+                                        Design</span>
+                                    <span class="px-3 py-1.5 bg-white border border-gray-300 text-accent text-xs">REST
+                                        APIs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 sm:py-20 lg:py-24 bg-light border-t border-gray-200">
+            <div class="container max-w-6xl mx-auto px-4 sm:px-6">
+                <h2
+                    class="text-2xl sm:text-3xl md:text-4xl font-semibold mb-8 sm:mb-12 text-primary opacity-0 animate-slide-up">
+                    Contact
+                </h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                    <div class="space-y-6">
+                        <div class="opacity-0 animate-slide-in-left" style="animation-delay: 0.1s">
+                            <p class="text-sm text-secondary mb-1">Email</p>
+                            <a href="mailto:jmq.caballero@gmail.com"
+                                class="text-primary hover:text-secondary transition-all duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-secondary after:transition-all after:duration-300 hover:after:w-full">jmq.caballero@gmail.com</a>
+                        </div>
+                        <div class="opacity-0 animate-slide-in-left" style="animation-delay: 0.2s">
+                            <p class="text-sm text-secondary mb-1">Location</p>
+                            <p class="text-accent">Tanauan, Batangas</p>
+                        </div>
+                        <div class="opacity-0 animate-slide-in-left" style="animation-delay: 0.3s">
+                            <p class="text-sm text-secondary mb-1">Links</p>
+                            <div class="flex gap-4 mt-2">
+                                <a href="https://github.com/Ifou" target="_blank"
+                                    class="text-accent hover:text-primary transition-all duration-300 text-sm relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">GitHub</a>
+                                <a href="https://www.linkedin.com/in/john-mervin-caballero-105230314" target="_blank"
+                                    class="text-accent hover:text-primary transition-all duration-300 text-sm relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">LinkedIn</a>
+                                <a href="https://www.facebook.com/MachipoiWTF" target="_blank"
+                                    class="text-accent hover:text-primary transition-all duration-300 text-sm relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">Facebook</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="opacity-0 animate-slide-in-right" style="animation-delay: 0.2s">
+                        <h3 class="text-lg font-medium text-primary mb-6">Send Message</h3>
+                        <form id="contactForm" class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-sm text-secondary mb-2">Name</label>
+                                <input type="text" id="name"
+                                    class="w-full px-4 py-3 border border-gray-300 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all duration-300"
+                                    placeholder="Your name">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm text-secondary mb-2">Email</label>
+                                <input type="email" id="email"
+                                    class="w-full px-4 py-3 border border-gray-300 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all duration-300"
+                                    placeholder="your.email@example.com">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm text-secondary mb-2">Message</label>
+                                <textarea id="message" rows="5"
+                                    class="w-full px-4 py-3 border border-gray-300 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-all duration-300"
+                                    placeholder="Your message"></textarea>
+                            </div>
+                            <button type="submit"
+                                class="px-6 py-3 bg-primary text-white text-sm hover:bg-secondary transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-6 sm:py-8">
+        <div class="container max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+                <p class="text-accent">© 2025 Mervin Caballero</p>
+                <div class="flex gap-4 sm:gap-6">
+                    <a href="https://github.com/Ifou" target="_blank"
+                        class="text-accent hover:text-primary transition-all duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
+                        GitHub
+                    </a>
+                    <a href="https://www.linkedin.com/in/mervin-caballero-105230314/" target="_blank"
+                        class="text-accent hover:text-primary transition-all duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
+                        LinkedIn
+                    </a>
+                    <a href="https://www.facebook.com/MachipoiWTF" target="_blank"
+                        class="text-accent hover:text-primary transition-all duration-300 relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
+                        Facebook
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <button id="scroll-to-top"
+        class="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 p-2 sm:p-3 bg-primary text-white opacity-0 invisible transition-all duration-200 hover:bg-secondary focus:outline-none rounded-full shadow-lg z-50 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-lg sm:text-xl"
+        aria-label="Scroll to top">
+        ↑
+    </button> <!-- Project Details Modal -->
+    <div id="projectModal"
+        class="fixed inset-0 bg-black bg-opacity-50 z-[9999] hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
+        <div class="bg-white rounded-lg max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto my-2 sm:my-auto">
+            <div
+                class="p-4 sm:p-6 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10">
+                <h2 id="modalTitle" class="text-lg sm:text-2xl font-bold text-gray-800 pr-4"></h2>
+                <button onclick="closeProjectModal()"
+                    class="text-gray-500 hover:text-gray-700 text-xl sm:text-2xl flex-shrink-0 w-10 h-10 flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-4 sm:p-6">
+                <div id="modalContent" class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                    <!-- Content will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal"
+        class="fixed inset-0 bg-black bg-opacity-90 z-[10000] hidden items-center justify-center p-2 sm:p-4">
+        <div class="relative w-full h-full flex flex-col items-center justify-center">
+            <button onclick="closeImageModal()"
+                class="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 text-white hover:text-gray-300 text-2xl sm:text-3xl bg-black bg-opacity-50 rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modalImage" class="max-w-full max-h-[80vh] sm:max-h-[85vh] object-contain rounded-lg shadow-2xl"
+                src="" alt="">
+            <div id="modalImageCaption" class="image-modal-caption text-sm sm:text-base mt-2 sm:mt-4 px-4 text-center">
+            </div>
+        </div>
+    </div>
+<script is:inline src={scriptSrc} defer></script>
+</BaseLayout>

@@ -102,6 +102,8 @@ The classified look is pure CSS in `src/styles/dossier.css` — no background im
 
 **The case folder modal.** Opening a project runs a staged sequence rather than a plain fade: the folder cover rotates away on the X axis, an `ACCESSING FILE / AUTHORIZING CLEARANCE` terminal beat flashes underneath, the document sheet rises out of the folder, and a red `DECLASSIFIED` stamp lands on the corner. Closing replays it in reverse. The choreography is entirely CSS transitions whose delays are re-ordered by an `.is-closing` class, so `script.js` only toggles classes and one timer. Under `prefers-reduced-motion` the cover and terminal beat are removed and the document is presented immediately.
 
+[DESIGN.md](DESIGN.md) documents the full system — palette contrast ratios, the component vocabulary, the motion timings, and the rules for extending it.
+
 ## Contact form
 
 GitHub Pages serves static files only, so there is no server to post a form to. The Transmission Request therefore works in two modes, switched by one constant at the top of `public/script.js`:
@@ -132,8 +134,21 @@ The array is typed, so the editor will flag a missing field. Two things worth kn
 
 At build time `index.astro` serialises the array into the page as a `<script type="application/json">` block. `public/script.js` is a plain static file that cannot `import` from `src/`, so it reads the modal detail from there instead of keeping its own copy.
 
+## Documentation
+
+| File | Covers |
+| --- | --- |
+| [DESIGN.md](DESIGN.md) | The dossier concept, palette, typography, components, and motion rules |
+| [DEPLOYMENT.md](DEPLOYMENT.md) | Hosting options, the contact form setup, and the pre-deploy checklist |
+| [CHANGELOG.md](CHANGELOG.md) | What changed and when |
+| [PROFILE-README.md](PROFILE-README.md) | The GitHub profile README that previously lived here |
+
+## License
+
+The **source code** is released under the [MIT License](LICENSE) — take the Astro setup, the dossier CSS, or the redaction mechanic and use them freely.
+
+The **personal content is not**. All rights are reserved in the portrait, résumé, biography, project write-ups, and client screenshots under `public/Assets/` and `src/data/projects.ts`. Several of those screenshots depict client work and are not mine to relicense. If you fork this, swap in your own content.
+
 ## Contact
 
 Mervin Caballero — [jmq.caballero@gmail.com](mailto:jmq.caballero@gmail.com) · [LinkedIn](https://www.linkedin.com/in/john-mervin-caballero-105230314) · [GitHub](https://github.com/JMrvnC)
-
-> The GitHub profile README that previously lived here has been preserved as [PROFILE-README.md](PROFILE-README.md).

@@ -56,17 +56,16 @@ Config in `astro.config.mjs`:
 
 ### Option 1: GitHub Pages (recommended for this repo)
 
-1. Run `npm run build`
-2. Publish the contents of `dist/` to the branch/folder GitHub Pages uses
-   - Common pattern: deploy `dist` to `gh-pages`, or use a GitHub Action that builds and deploys
-3. Ensure Pages is served from that deploy target
+Do **not** use “Deploy from a branch” / `pages-build-deployment` (that runs Jekyll on raw source and breaks Astro).
+
+Use the workflow in `.github/workflows/deploy.yml` instead:
+
+1. In the repo on GitHub: **Settings → Pages → Build and deployment → Source → GitHub Actions**
+2. Commit and push this repo (branch `portfolio` or `main`)
+3. Open the **Actions** tab and confirm **Deploy to GitHub Pages** succeeds
 4. Site URL: `https://ifou.github.io/Ifou/`
 
-If you use a GitHub Action, the workflow should:
-
-1. `npm ci`
-2. `npm run build`
-3. Upload `dist/` as the Pages artifact / publish directory
+The workflow builds with Astro and deploys `dist/`. `public/.nojekyll` is included so Pages won’t re-run Jekyll on the built site.
 
 ### Option 2: Netlify
 

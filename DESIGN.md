@@ -113,12 +113,12 @@ Opening a project runs a staged sequence rather than a fade, so it reads as phys
 
 | Time | Beat |
 | --- | --- |
-| 0–440ms | The folder cover rotates away on the X axis from its top edge (`rotateX(-116deg)`), fading out over the last 180ms |
-| 100–800ms | `> ACCESSING FILE` / `> AUTHORIZING CLEARANCE` flashes underneath with a scanning bar |
-| 340–680ms | The document sheet rises and scales up into place |
-| 620–880ms | The red `DECLASSIFIED` stamp lands with an overshoot easing |
+| 0–400ms | Backdrop fades in; the closed folder rises into place (`is-entering`) |
+| 400–1350ms | The folder cover rotates away (`rotateX(-116deg)`), then fades out |
+| 1400–2000ms | The document sheet rises and scales up into place |
+| 1900–2400ms | The red `DECLASSIFIED` stamp lands with an overshoot easing |
 
-Closing replays it compressed to ~460ms: stamp out, sheet down, cover drops back.
+The clearance terminal beat (`> ACCESSING FILE` / `> AUTHORIZING CLEARANCE`) is currently disabled; markup and CSS are commented for later restore. Closing reverses the cover sequence (~1150ms), then the folder and backdrop fade out (~340ms).
 
 The choreography is entirely CSS transitions with staggered `transition-delay`. Closing works by re-ordering those delays through an `.is-closing` class rather than by writing a second set of animations. `public/script.js` therefore only toggles two classes and holds one timer, which it clears on re-open so rapid clicking cannot desynchronise the sequence.
 

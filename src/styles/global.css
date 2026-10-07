@@ -75,6 +75,16 @@ body {
   background: rgba(8, 8, 8, 0.92);
 }
 
+/* Soft backdrop fade so page text is not cut off when the folder appears */
+#projectModal {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+#projectModal.is-present {
+  opacity: 1;
+}
+
 .modal-image-container {
   position: relative;
   overflow: hidden;

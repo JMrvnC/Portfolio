@@ -463,7 +463,12 @@ function escapeHtml(value) {
 let activeExhibits = [];
 
 /** Matches the folder open/close choreography in dossier.css. */
-const FOLDER_CLOSE_MS = 480;
+/** Folder arrives into the scene before the cover opens. */
+const FOLDER_ENTER_MS = 400;
+/** Cover close choreography in dossier.css (~1.15s). */
+const FOLDER_CLOSE_MS = 1150;
+/** Backdrop / folder fade-out after the cover closes. */
+const FOLDER_EXIT_MS = 340;
 let folderTimer = null;
 
 window.openProjectModal = function (projectId) {
@@ -475,25 +480,40 @@ window.openProjectModal = function (projectId) {
     const modalTitle = document.getElementById('modalTitle');
     const modalContent = document.getElementById('modalContent');
 
-    activeExhibits = project.images;
+    const images = Array.isArray(project.images) ? project.images : [];
+    activeExhibits = images;
 
     const statusChip = project.status === 'Completed' ? 'chip-ink' : 'chip-stamp';
-
-    modalTitle.textContent = project.title;
-    modalContent.innerHTML = `
-        <div class="space-y-4 order-2 lg:order-1">
+    const evidenceBlock = images.length
+        ? `
             <div class="flex items-center gap-3">
                 <span class="chip-ink">Evidence Log</span>
-                <span class="file-meta">${project.images.length} Exhibits Attached</span>
+                <span class="file-meta">${images.length} Exhibits Attached</span>
             </div>
             <div class="project-gallery">
-                ${project.images.map((image, index) => `
+                ${images.map((image, index) => `
                     <button type="button" class="gallery-image modal-image-container" data-exhibit="${index}">
                         <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" class="modal-image" loading="lazy">
                         <span class="image-zoom-overlay">Enlarge Exhibit</span>
                     </button>
                 `).join('')}
             </div>
+        `
+        : `
+            <div class="flex items-center gap-3">
+                <span class="chip-stamp">Evidence Pending</span>
+                <span class="file-meta">0 Exhibits Attached</span>
+            </div>
+            <div class="doc-sheet border border-ink p-6 text-center space-y-2">
+                <p class="file-meta file-meta--ink">No screenshots filed for this case yet.</p>
+                <p class="file-meta">Exhibits will be attached when available.</p>
+            </div>
+        `;
+
+    modalTitle.textContent = project.title;
+    modalContent.innerHTML = `
+        <div class="space-y-4 order-2 lg:order-1">
+            ${evidenceBlock}
         </div>
 
         <div class="space-y-6 order-1 lg:order-2">
@@ -544,16 +564,24 @@ window.openProjectModal = function (projectId) {
     });
 
     clearTimeout(folderTimer);
-    modal.classList.remove('hidden');
+    modal.classList.remove('hidden', 'is-present');
     modal.classList.add('flex');
-    folder.classList.remove('is-closing');
+    folder.classList.remove('is-closing', 'is-open', 'is-entering', 'is-exiting');
     folder.scrollTop = 0;
     document.body.style.overflow = 'hidden';
 
-    // Commit the closed state before flipping to open, otherwise the browser
+    // Commit the closed/arrive state before transitioning, otherwise the browser
     // collapses both into one frame and the folder never appears to unfold.
     void folder.offsetWidth;
-    requestAnimationFrame(() => folder.classList.add('is-open'));
+    requestAnimationFrame(() => {
+        modal.classList.add('is-present');
+        folder.classList.add('is-entering');
+    });
+
+    const enterMs = prefersReducedMotion() ? 0 : FOLDER_ENTER_MS;
+    folderTimer = setTimeout(() => {
+        folder.classList.add('is-open');
+    }, enterMs);
 };
 
 window.closeProjectModal = function () {
@@ -566,12 +594,21 @@ window.closeProjectModal = function () {
     folder.classList.add('is-closing');
     folder.classList.remove('is-open');
 
+    const closeMs = prefersReducedMotion() ? 0 : FOLDER_CLOSE_MS;
+    const exitMs = prefersReducedMotion() ? 0 : FOLDER_EXIT_MS;
+
     folderTimer = setTimeout(() => {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        folder.classList.remove('is-closing');
-        document.body.style.overflow = 'auto';
-    }, prefersReducedMotion() ? 0 : FOLDER_CLOSE_MS);
+        modal.classList.remove('is-present');
+        folder.classList.add('is-exiting');
+        folder.classList.remove('is-entering', 'is-closing');
+
+        folderTimer = setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex', 'is-present');
+            folder.classList.remove('is-exiting', 'is-closing', 'is-open', 'is-entering');
+            document.body.style.overflow = 'auto';
+        }, exitMs);
+    }, closeMs);
 };
 
 // ---------------------------------------------------------------------------

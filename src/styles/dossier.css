@@ -61,20 +61,19 @@ body::after {
   }
 }
 
-/* The "ACCESSING FILE" beat that flashes while the case folder opens */
+/* The "ACCESSING FILE" beat that flashes after the cover has opened */
 @keyframes bootFlash {
   0% {
     opacity: 0;
   }
-  16% {
+  12% {
     opacity: 1;
   }
-  68% {
+  72% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    visibility: hidden;
   }
 }
 
@@ -479,9 +478,9 @@ img.evidence:hover {
 
 /* --------------------------------------------------------------------------
    Case folder modal
-   Opening runs as a staged sequence: the cover rotates away, a terminal beat
-   flashes, the document rises out of the folder, and the stamp lands. Closing
-   replays it in reverse by swapping the transition delays.
+   Opening is strictly sequential so beats do not overlap:
+   cover opens → clearance terminal → document rises → stamp lands.
+   Closing reverses that order with swapped delays.
    -------------------------------------------------------------------------- */
 
 .dossier-folder {
@@ -490,6 +489,22 @@ img.evidence:hover {
   max-width: 72rem;
   margin: auto;
   perspective: 1400px;
+  /* Arrive into the scene before the cover opens */
+  opacity: 0;
+  transform: translateY(18px) scale(0.97);
+  transition:
+    opacity 0.38s ease,
+    transform 0.42s cubic-bezier(0.2, 0.8, 0.25, 1);
+}
+
+.dossier-folder.is-entering {
+  opacity: 1;
+  transform: none;
+}
+
+.dossier-folder.is-open .folder-flap,
+.dossier-folder.is-closing .folder-flap {
+  will-change: transform, opacity;
 }
 
 .folder-sheet {
@@ -501,9 +516,10 @@ img.evidence:hover {
   overflow-y: auto;
   opacity: 0;
   transform: translateY(28px) scale(0.985);
+  /* Starts after cover (~0.95s). Was 2.25s when clearance beat was enabled. */
   transition:
-    opacity 0.26s ease 0.34s,
-    transform 0.34s cubic-bezier(0.2, 0.8, 0.25, 1) 0.34s;
+    opacity 0.5s ease 1s,
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.25, 1) 1s;
 }
 
 .dossier-folder.is-open .folder-sheet {
@@ -524,10 +540,10 @@ img.evidence:hover {
   transform-origin: top center;
   transform: rotateX(0deg);
   backface-visibility: hidden;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  box-shadow: 6px 6px 0 var(--color-ink);
   transition:
-    transform 0.44s cubic-bezier(0.35, 0.02, 0.2, 1),
-    opacity 0.18s ease 0.3s;
+    transform 0.95s cubic-bezier(0.35, 0.02, 0.2, 1),
+    opacity 0.3s ease 0.7s;
 }
 
 .dossier-folder.is-open .folder-flap {
@@ -572,7 +588,11 @@ img.evidence:hover {
   max-width: 22rem;
 }
 
-/* Terminal beat */
+/*
+  Clearance terminal beat — DISABLED.
+  To restore: uncomment this block, uncomment the markup in index.astro,
+  and set .folder-sheet delay back to ~2.25s and .folder-stamp delay to ~2.75s.
+
 .folder-boot {
   position: absolute;
   inset: 0;
@@ -587,7 +607,12 @@ img.evidence:hover {
 }
 
 .dossier-folder.is-open .folder-boot {
-  animation: bootFlash 0.8s ease forwards;
+  animation: bootFlash 1.25s ease 1s forwards;
+}
+
+.dossier-folder.is-closing .folder-boot {
+  animation: none;
+  opacity: 0;
 }
 
 .folder-boot-line {
@@ -611,6 +636,7 @@ img.evidence:hover {
   height: 100%;
   background: var(--color-stamp);
 }
+*/
 
 /* Stamp that lands once the file is open. Sits clear of the close button in
    the sheet header, which shares this corner. */
@@ -623,9 +649,10 @@ img.evidence:hover {
   background: rgba(242, 240, 234, 0.94);
   opacity: 0;
   transform: rotate(-20deg) scale(2.1);
+  /* Lands after the sheet has mostly risen. Was 2.75s with clearance beat. */
   transition:
-    opacity 0.14s ease 0.62s,
-    transform 0.26s cubic-bezier(0.2, 1.5, 0.4, 1) 0.62s;
+    opacity 0.28s ease 1.5s,
+    transform 0.48s cubic-bezier(0.2, 1.5, 0.4, 1) 1.5s;
   pointer-events: none;
 }
 
@@ -634,23 +661,32 @@ img.evidence:hover {
   transform: rotate(-9deg) scale(1);
 }
 
-/* Closing: same states, compressed and re-ordered delays */
+/* Closing: reverse order */
 .dossier-folder.is-closing .folder-stamp {
   transition:
-    opacity 0.1s ease,
-    transform 0.16s ease;
+    opacity 0.22s ease,
+    transform 0.3s ease;
 }
 
 .dossier-folder.is-closing .folder-sheet {
   transition:
-    opacity 0.16s ease 0.04s,
-    transform 0.2s ease 0.04s;
+    opacity 0.35s ease 0.1s,
+    transform 0.42s ease 0.1s;
 }
 
 .dossier-folder.is-closing .folder-flap {
   transition:
-    transform 0.3s cubic-bezier(0.35, 0.02, 0.2, 1) 0.16s,
-    opacity 0.12s ease 0.16s;
+    transform 0.7s cubic-bezier(0.35, 0.02, 0.2, 1) 0.42s,
+    opacity 0.28s ease 0.42s;
+}
+
+/* Exit: settle the whole folder out after the cover closes */
+.dossier-folder.is-exiting {
+  opacity: 0;
+  transform: translateY(14px) scale(0.97);
+  transition:
+    opacity 0.32s ease,
+    transform 0.36s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (max-width: 640px) {
@@ -678,7 +714,12 @@ img.evidence:hover {
   .image-zoom-overlay,
   .folder-sheet,
   .folder-flap,
-  .folder-stamp {
+  .folder-stamp,
+  .dossier-folder {
+    transition: none !important;
+  }
+
+  #projectModal {
     transition: none !important;
   }
 
@@ -694,6 +735,13 @@ img.evidence:hover {
   .folder-flap,
   .folder-boot {
     display: none !important;
+  }
+
+  .dossier-folder,
+  .dossier-folder.is-entering,
+  .dossier-folder.is-exiting {
+    opacity: 1;
+    transform: none;
   }
 
   .dossier-folder .folder-sheet {

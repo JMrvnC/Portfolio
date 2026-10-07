@@ -1,9 +1,18 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import { projects, fileNumberFor, toModalPayload } from '../data/projects';
+import {
+  projects,
+  primaryProjects,
+  supplementalProjects,
+  fileNumberFor,
+  toModalPayload,
+} from '../data/projects';
 
-const scriptSrc = `${import.meta.env.BASE_URL}script.js`;
+const base = import.meta.env.BASE_URL;
+const scriptSrc = `${base}script.js`;
+const portraitSrc = `${base}Assets/ME.jpg`;
 
 const navItems = [
   { href: '#home', label: '01 / Subject' },
@@ -13,6 +22,8 @@ const navItems = [
 ];
 
 const totalFiles = fileNumberFor(projects.length - 1);
+const primaryOffset = 0;
+const supplementalOffset = primaryProjects.length;
 
 // Handed to public/script.js, which cannot import from src/. Escaping `<` keeps
 // a stray "</script>" inside the copy from terminating the tag early.
@@ -21,14 +32,19 @@ const modalPayload = JSON.stringify(toModalPayload()).replace(/</g, '\\u003c');
 const contactEmail = 'jmq.caballero@gmail.com';
 
 const manifest = [
-  'Flutter',
-  'Unity AR',
-  'ARCore/ARKit',
-  'Node.js',
+  'PHP',
+  'Python',
+  'C#',
+  'JavaScript',
+  'Dart',
   'Laravel',
-  '3D Modeling',
-  'Hostinger',
+  'WordPress',
+  'MySQL',
+  'Unity',
+  'YOLO',
   'Tailwind CSS',
+  'Git',
+  'Flutter',
 ];
 
 const closedFiles = String(
@@ -37,8 +53,8 @@ const closedFiles = String(
 
 const dossierRecord = [
   { label: 'Designation', value: 'Full Stack Developer' },
-  { label: 'Specialization', value: 'Web Applications / Augmented Reality' },
-  { label: 'Years Active', value: '01' },
+  { label: 'Specialization', value: 'Web Applications / AR' },
+  { label: 'Active Window', value: '2025 – Present' },
   { label: 'Files On Record', value: totalFiles },
   { label: 'Files Closed', value: closedFiles },
 ];
@@ -68,7 +84,6 @@ const dossierRecord = [
   <nav
     class="fixed top-0 left-0 w-full z-50 bg-paper/95 backdrop-blur-md border-t-2 border-stamp border-b border-ink transition-all duration-300 px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3"
     id="navbar"
-    role="navigation"
     aria-label="Main navigation"
   >
     <div class="max-w-6xl mx-auto flex justify-between items-center gap-4">
@@ -166,13 +181,13 @@ const dossierRecord = [
               class="text-accent text-base max-w-xl leading-relaxed opacity-0 animate-slide-in-left"
               style="animation-delay: 0.3s"
             >
-              Creating immersive digital experiences with 1 year of experience in
+              Full Stack Developer building
               <button type="button" class="redact" aria-expanded="false" aria-label="Redacted text, activate to reveal"
-                >web applications</button
+                >PHP and MySQL web applications</button
               >
               and
               <button type="button" class="redact" aria-expanded="false" aria-label="Redacted text, activate to reveal"
-                >AR solutions</button
+                >Unity AR experiences</button
               >.
             </p>
 
@@ -216,21 +231,21 @@ const dossierRecord = [
             class="lg:col-span-2 flex justify-center lg:justify-end opacity-0 animate-slide-in-right order-first lg:order-last"
             style="animation-delay: 0.2s"
           >
-            <figure class="relative w-full max-w-xs sm:max-w-sm">
-              <div class="doc-sheet corner-marks p-3">
-                <div class="evidence overflow-hidden border border-ink aspect-square">
-                  <img
-                    src="Assets/ME.jpg"
-                    alt="Mervin Caballero - Full Stack Developer"
-                    class="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <figcaption class="file-meta mt-2 flex justify-between">
-                  <span>Exhibit A</span>
-                  <span class="file-meta--stamp">ID Verified</span>
-                </figcaption>
+            <figure class="doc-sheet corner-marks relative w-full max-w-xs sm:max-w-sm p-3">
+              <div class="evidence overflow-hidden border border-ink aspect-square">
+                <Image
+                  src={portraitSrc}
+                  alt="Mervin Caballero - Full Stack Developer"
+                  width={600}
+                  height={600}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
               </div>
+              <figcaption class="file-meta mt-2 flex justify-between">
+                <span>Exhibit A</span>
+                <span class="file-meta--stamp">ID Verified</span>
+              </figcaption>
               <span class="stamp stamp-overlay">Declassified</span>
             </figure>
           </div>
@@ -263,7 +278,7 @@ const dossierRecord = [
             <hr class="flex-grow rule-stamp" />
           </div>
           <h2 class="font-stencil text-3xl sm:text-4xl md:text-5xl uppercase text-ink">
-            Work Experience
+            Case Files
           </h2>
           <p class="file-meta mt-2">
             {totalFiles} Files On Record &middot; Clearance Granted
@@ -272,14 +287,36 @@ const dossierRecord = [
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {
-            projects.map((project, index) => (
+            primaryProjects.map((project, index) => (
               <ProjectCard
                 project={project}
-                fileNumber={fileNumberFor(index)}
+                fileNumber={fileNumberFor(primaryOffset + index)}
                 totalFiles={totalFiles}
               />
             ))
           }
+        </div>
+
+        <div class="mt-14 sm:mt-16 pt-10 border-t border-rule">
+          <div class="flex flex-wrap items-center gap-3 mb-3">
+            <span class="chip-ink">Annex C</span>
+            <span class="file-meta">Supplemental Files</span>
+            <hr class="flex-grow rule-stamp" />
+          </div>
+          <p class="file-meta mb-8 max-w-2xl">
+            Additional case files kept on record beside the primary highlights above.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {
+              supplementalProjects.map((project, index) => (
+                <ProjectCard
+                  project={project}
+                  fileNumber={fileNumberFor(supplementalOffset + index)}
+                  totalFiles={totalFiles}
+                />
+              ))
+            }
+          </div>
         </div>
       </div>
     </section>
@@ -304,10 +341,10 @@ const dossierRecord = [
               class="text-accent text-base mb-8 leading-relaxed opacity-0 animate-fade-in"
               style="animation-delay: 0.2s"
             >
-              With 1 year of experience in full-stack development and emerging technologies, I
-              specialize in creating immersive digital experiences that bridge the physical and
-              digital worlds. From traditional web applications to cutting-edge AR solutions, I
-              focus on delivering innovative technology that enhances user engagement.
+              BS Information Technology graduate from Batangas State University. Path so far:
+              Software Developer internship at Arktech Philippines Inc., then independent full-stack
+              and AR projects. Targeting full-stack roles focused on PHP/web applications, with
+              Unity AR as a secondary strength.
             </p>
 
             <div class="space-y-3 mb-8">
@@ -320,7 +357,9 @@ const dossierRecord = [
                   <h3 class="font-stencil uppercase text-ink tracking-wide">
                     Batangas State University
                   </h3>
-                  <p class="file-meta">Information Technology &middot; 2025</p>
+                  <p class="file-meta">
+                    BS Information Technology, Major in Service Management &middot; 2025
+                  </p>
                 </div>
               </div>
               <div
@@ -329,8 +368,10 @@ const dossierRecord = [
               >
                 <span class="chip-ink mt-0.5">OPS</span>
                 <div>
-                  <h3 class="font-stencil uppercase text-ink tracking-wide">1 Year Experience</h3>
-                  <p class="file-meta">Full-stack development</p>
+                  <h3 class="font-stencil uppercase text-ink tracking-wide">
+                    Arktech Philippines Inc.
+                  </h3>
+                  <p class="file-meta">Software Developer Internship &middot; Feb–May 2025</p>
                 </div>
               </div>
               <div
@@ -339,8 +380,10 @@ const dossierRecord = [
               >
                 <span class="chip-ink mt-0.5">LOG</span>
                 <div>
-                  <h3 class="font-stencil uppercase text-ink tracking-wide">6 Projects</h3>
-                  <p class="file-meta">Delivered successfully</p>
+                  <h3 class="font-stencil uppercase text-ink tracking-wide">
+                    {totalFiles} Case Files
+                  </h3>
+                  <p class="file-meta">Independent and assisted development &middot; 2024–Present</p>
                 </div>
               </div>
             </div>
@@ -365,57 +408,53 @@ const dossierRecord = [
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-8">
                 <div class="opacity-0 animate-slide-up" style="animation-delay: 0.4s">
                   <h4 class="font-stencil uppercase text-ink mb-3 pb-2 border-b border-ink">
-                    Mobile &amp; AR Development
+                    Languages
                   </h4>
                   <ul class="space-y-1.5">
-                    <li class="file-meta file-meta--ink">&#9642; Flutter &amp; Dart</li>
-                    <li class="file-meta file-meta--ink">&#9642; Unity AR Development</li>
-                    <li class="file-meta file-meta--ink">&#9642; ARCore &amp; ARKit</li>
-                    <li class="file-meta file-meta--ink">&#9642; AR Flutter Plugin</li>
-                    <li class="file-meta file-meta--ink">&#9642; 3D Modeling &amp; Blender</li>
+                    <li class="file-meta file-meta--ink">&#9642; PHP</li>
+                    <li class="file-meta file-meta--ink">&#9642; Python</li>
+                    <li class="file-meta file-meta--ink">&#9642; C#</li>
+                    <li class="file-meta file-meta--ink">&#9642; Dart</li>
+                    <li class="file-meta file-meta--ink">&#9642; JavaScript</li>
                   </ul>
                 </div>
                 <div class="opacity-0 animate-slide-up" style="animation-delay: 0.5s">
                   <h4 class="font-stencil uppercase text-ink mb-3 pb-2 border-b border-ink">
-                    Web Development
+                    Web
                   </h4>
                   <ul class="space-y-1.5">
-                    <li class="file-meta file-meta--ink">&#9642; PHP &amp; Laravel</li>
-                    <li class="file-meta file-meta--ink">&#9642; Node.js &amp; JavaScript</li>
-                    <li class="file-meta file-meta--ink">&#9642; WordPress &amp; WooCommerce</li>
-                    <li class="file-meta file-meta--ink">&#9642; Laravel Livewire</li>
-                    <li class="file-meta file-meta--ink">&#9642; Tailwind CSS</li>
+                    <li class="file-meta file-meta--ink">&#9642; Laravel</li>
+                    <li class="file-meta file-meta--ink">&#9642; WordPress</li>
+                    <li class="file-meta file-meta--ink">&#9642; HTML, CSS, JavaScript</li>
+                    <li class="file-meta file-meta--ink">&#9642; jQuery, AJAX, Bootstrap</li>
+                    <li class="file-meta file-meta--ink">&#9642; Tailwind CSS &amp; REST APIs</li>
                   </ul>
                 </div>
               </div>
 
               <div class="mb-8">
                 <h4 class="font-stencil uppercase text-ink mb-3 pb-2 border-b border-ink">
-                  Operational Experience
+                  Database &amp; Tools
                 </h4>
-                <div class="grid sm:grid-cols-2 gap-x-6 gap-y-1.5">
-                  <p class="file-meta file-meta--ink">&#9642; AR Museum Applications</p>
-                  <p class="file-meta file-meta--ink">&#9642; Custom CMS Development</p>
-                  <p class="file-meta file-meta--ink">&#9642; E-commerce Platforms</p>
-                  <p class="file-meta file-meta--ink">&#9642; HR Management Systems</p>
-                  <p class="file-meta file-meta--ink">&#9642; Flutter Mobile Apps</p>
-                  <p class="file-meta file-meta--ink">&#9642; Full-Stack Web Solutions</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="tag-code">MySQL</span>
+                  <span class="tag-code">SQLite</span>
+                  <span class="tag-code">Git</span>
+                  <span class="tag-code">GitHub</span>
+                  <span class="tag-code">XAMPP</span>
+                  <span class="tag-code">MySQL Workbench</span>
                 </div>
               </div>
 
               <div>
                 <h4 class="font-stencil uppercase text-ink mb-3 pb-2 border-b border-ink">
-                  Database &amp; Tools
+                  Other
                 </h4>
                 <div class="flex flex-wrap gap-1.5">
-                  <span class="tag-code">MySQL</span>
-                  <span class="tag-code">Hostinger</span>
-                  <span class="tag-code">GitHub</span>
-                  <span class="tag-code">Git Version Control</span>
-                  <span class="tag-code">Python</span>
-                  <span class="tag-code">HTML/CSS</span>
-                  <span class="tag-code">Responsive Design</span>
-                  <span class="tag-code">REST APIs</span>
+                  <span class="tag-code">Unity</span>
+                  <span class="tag-code">AR Development</span>
+                  <span class="tag-code">YOLO</span>
+                  <span class="tag-code">Flutter</span>
                 </div>
               </div>
             </div>
@@ -477,12 +516,6 @@ const dossierRecord = [
                   target="_blank"
                   rel="noopener noreferrer"
                   class="tag-code">LinkedIn</a
-                >
-                <a
-                  href="https://www.facebook.com/MachipoiWTF"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="tag-code">Facebook</a
                 >
               </div>
             </div>
@@ -564,16 +597,10 @@ const dossierRecord = [
         <div class="flex gap-4">
           <a href="https://github.com/JMrvnC" target="_blank" rel="noopener noreferrer" class="file-meta hover:text-stamp transition-colors">GitHub</a>
           <a
-            href="https://www.linkedin.com/in/mervin-caballero-105230314/"
+            href="https://www.linkedin.com/in/john-mervin-caballero-105230314"
             target="_blank"
             rel="noopener noreferrer"
             class="file-meta hover:text-stamp transition-colors">LinkedIn</a
-          >
-          <a
-            href="https://www.facebook.com/MachipoiWTF"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="file-meta hover:text-stamp transition-colors">Facebook</a
           >
         </div>
         <p class="file-meta">Page 01 of 01</p>
@@ -608,12 +635,14 @@ const dossierRecord = [
         </div>
       </div>
 
-      <!-- Terminal beat that plays while the folder opens -->
-      <div class="folder-boot" aria-hidden="true">
-        <p class="folder-boot-line">&gt; Accessing file</p>
-        <div class="folder-boot-bar"><span class="decrypt-bar"></span></div>
-        <p class="folder-boot-line">&gt; Authorizing clearance</p>
-      </div>
+      {/*
+        Clearance terminal beat — disabled for now; restore with matching CSS in dossier.css.
+        <div class="folder-boot" aria-hidden="true">
+          <p class="folder-boot-line">&gt; Accessing file</p>
+          <div class="folder-boot-bar"><span class="decrypt-bar"></span></div>
+          <p class="folder-boot-line">&gt; Authorizing clearance</p>
+        </div>
+      */}
 
       <div class="folder-sheet">
         <div
@@ -661,11 +690,13 @@ const dossierRecord = [
       >
         <i class="fas fa-times"></i>
       </button>
-      <img
+      <Image
         id="modalImage"
-        class="max-w-full max-h-[80vh] sm:max-h-[85vh] object-contain border-2 border-paper-raw"
-        src=""
+        src={portraitSrc}
         alt=""
+        width={1200}
+        height={800}
+        class="max-w-full max-h-[80vh] sm:max-h-[85vh] object-contain border-2 border-paper-raw"
       />
       <div id="modalImageCaption" class="image-modal-caption text-xs sm:text-sm mt-2 sm:mt-4 px-4 text-center">
       </div>
